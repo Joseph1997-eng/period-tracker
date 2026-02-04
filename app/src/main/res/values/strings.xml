@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Period Tracker</string>
+    <string name="select_date_label">Select Last Period Start Date</string>
+    <string name="predict_button">Predict Next Period</string>
+    <string name="predictions_title">Predictions</string>
+    <string name="next_period_label">📅 Next Period</string>
+    <string name="fertile_window_label">🌸 Fertile Window</string>
+    <string name="fertile_info">(Most likely to conceive during this period)</string>
+    <string name="next_period_placeholder">Next Period Date: --</string>
+    <string name="fertile_window_placeholder">Fertile Window: --</string>
+</resources>

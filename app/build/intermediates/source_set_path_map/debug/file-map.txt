@@ -1,0 +1,33 @@
+com.example.periodtracker.app-pngs-0 C:\LAI AI\period_tracker\app\build\generated\res\pngs\debug
+com.example.periodtracker.app-resValues-1 C:\LAI AI\period_tracker\app\build\generated\res\resValues\debug
+com.example.periodtracker.app-rs-2 C:\LAI AI\period_tracker\app\build\generated\res\rs\debug
+com.example.periodtracker.app-mergeDebugResources-3 C:\LAI AI\period_tracker\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.example.periodtracker.app-mergeDebugResources-4 C:\LAI AI\period_tracker\app\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.example.periodtracker.app-merged_res-5 C:\LAI AI\period_tracker\app\build\intermediates\merged_res\debug
+com.example.periodtracker.app-debug-6 C:\LAI AI\period_tracker\app\src\debug\res
+com.example.periodtracker.app-main-7 C:\LAI AI\period_tracker\app\src\main\res
+com.example.periodtracker.app-coordinatorlayout-1.1.0-8 C:\Users\Joseph\.gradle\caches\transforms-3\012b63bdc03cbc670d27980c6c77c28f\transformed\coordinatorlayout-1.1.0\res
+com.example.periodtracker.app-constraintlayout-2.1.4-9 C:\Users\Joseph\.gradle\caches\transforms-3\01f4fdf7a9e69d5f7f635af3c1d0102b\transformed\constraintlayout-2.1.4\res
+com.example.periodtracker.app-jetified-savedstate-1.2.0-10 C:\Users\Joseph\.gradle\caches\transforms-3\07e87cd4097546e1f1e498f7022d2582\transformed\jetified-savedstate-1.2.0\res
+com.example.periodtracker.app-lifecycle-viewmodel-2.5.1-11 C:\Users\Joseph\.gradle\caches\transforms-3\0d101616855717e1e8107d0aa3b28709\transformed\lifecycle-viewmodel-2.5.1\res
+com.example.periodtracker.app-jetified-emoji2-views-helper-1.2.0-12 C:\Users\Joseph\.gradle\caches\transforms-3\2c758da318bad00d2c6037fde7485f91\transformed\jetified-emoji2-views-helper-1.2.0\res
+com.example.periodtracker.app-fragment-1.3.6-13 C:\Users\Joseph\.gradle\caches\transforms-3\3059e32f82916b1d10995d792a63eb18\transformed\fragment-1.3.6\res
+com.example.periodtracker.app-jetified-annotation-experimental-1.3.0-14 C:\Users\Joseph\.gradle\caches\transforms-3\3836ba96c7dd790041fdb99c409c9a7e\transformed\jetified-annotation-experimental-1.3.0\res
+com.example.periodtracker.app-jetified-lifecycle-viewmodel-savedstate-2.5.1-15 C:\Users\Joseph\.gradle\caches\transforms-3\598604dc2bf7880b40edf4f33e49d05a\transformed\jetified-lifecycle-viewmodel-savedstate-2.5.1\res
+com.example.periodtracker.app-lifecycle-runtime-2.5.1-16 C:\Users\Joseph\.gradle\caches\transforms-3\5d4cdea8ec4c284cd00435a53cb063d3\transformed\lifecycle-runtime-2.5.1\res
+com.example.periodtracker.app-appcompat-1.6.1-17 C:\Users\Joseph\.gradle\caches\transforms-3\60e8040bf921c9951befca8e9d939085\transformed\appcompat-1.6.1\res
+com.example.periodtracker.app-material-1.9.0-18 C:\Users\Joseph\.gradle\caches\transforms-3\6a4ffa34e90319200dc1ad4369e9c228\transformed\material-1.9.0\res
+com.example.periodtracker.app-jetified-appcompat-resources-1.6.1-19 C:\Users\Joseph\.gradle\caches\transforms-3\74c76767fb56591f8b3d868610d048bc\transformed\jetified-appcompat-resources-1.6.1\res
+com.example.periodtracker.app-jetified-security-crypto-1.1.0-alpha06-20 C:\Users\Joseph\.gradle\caches\transforms-3\8d19a0e248f0e58f9c91f0beff80a353\transformed\jetified-security-crypto-1.1.0-alpha06\res
+com.example.periodtracker.app-lifecycle-livedata-core-2.5.1-21 C:\Users\Joseph\.gradle\caches\transforms-3\8ed118aa785e57d8140719386fb95a22\transformed\lifecycle-livedata-core-2.5.1\res
+com.example.periodtracker.app-jetified-emoji2-1.2.0-22 C:\Users\Joseph\.gradle\caches\transforms-3\97bfd3fa44515a49a328ae7c0abc77c3\transformed\jetified-emoji2-1.2.0\res
+com.example.periodtracker.app-jetified-lifecycle-process-2.4.1-23 C:\Users\Joseph\.gradle\caches\transforms-3\9b731e6734ab4fcc0149c11e02d12472\transformed\jetified-lifecycle-process-2.4.1\res
+com.example.periodtracker.app-cardview-1.0.0-24 C:\Users\Joseph\.gradle\caches\transforms-3\9b9b248a05b801dc52e230016fa0b6bd\transformed\cardview-1.0.0\res
+com.example.periodtracker.app-recyclerview-1.1.0-25 C:\Users\Joseph\.gradle\caches\transforms-3\9d6a9b815b8b84389603054e5ae705fd\transformed\recyclerview-1.1.0\res
+com.example.periodtracker.app-jetified-viewpager2-1.0.0-26 C:\Users\Joseph\.gradle\caches\transforms-3\aaa4a8da806f37b6685702fa97d3a210\transformed\jetified-viewpager2-1.0.0\res
+com.example.periodtracker.app-core-1.9.0-27 C:\Users\Joseph\.gradle\caches\transforms-3\c4781ed071f4df465d69e7b9ecfecdd8\transformed\core-1.9.0\res
+com.example.periodtracker.app-jetified-startup-runtime-1.1.1-28 C:\Users\Joseph\.gradle\caches\transforms-3\cf404534065d821dedf2de8619d6f748\transformed\jetified-startup-runtime-1.1.1\res
+com.example.periodtracker.app-jetified-core-ktx-1.9.0-29 C:\Users\Joseph\.gradle\caches\transforms-3\da18369caed7553535a2b34f3937eac9\transformed\jetified-core-ktx-1.9.0\res
+com.example.periodtracker.app-jetified-activity-1.6.0-30 C:\Users\Joseph\.gradle\caches\transforms-3\dfd9205d56b8a62c93cb9fd4308a8786\transformed\jetified-activity-1.6.0\res
+com.example.periodtracker.app-drawerlayout-1.1.1-31 C:\Users\Joseph\.gradle\caches\transforms-3\edaa8a2c21e71fc1adc076f33fada5bd\transformed\drawerlayout-1.1.1\res
+com.example.periodtracker.app-transition-1.2.0-32 C:\Users\Joseph\.gradle\caches\transforms-3\f0c3f3e9d5674c0655acb9478c205a4b\transformed\transition-1.2.0\res
