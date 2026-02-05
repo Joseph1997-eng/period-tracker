@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
     ndkVersion "24.0.8215806"
 
     defaultConfig {
         applicationId "com.example.periodtracker"
-        minSdk 21
-        targetSdk 31
+        minSdk 26
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

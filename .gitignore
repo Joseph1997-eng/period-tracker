@@ -1,0 +1,40 @@
+# Gradle files
+.gradle/
+build/
+*.apk
+*.aab
+*.ap_
+
+# Android Studio files
+.idea/
+.DS_Store
+local.properties
+*.iml
+
+# Build files
+bin/
+gen/
+out/
+
+# Gradle wrapper
+gradle/wrapper/dists/
+
+# Markdown files (except README.md)
+*.md
+!README.md
+
+# Temporary files
+*.tmp
+*.log
+.swp
+.swo
+*~
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+.DS_Store

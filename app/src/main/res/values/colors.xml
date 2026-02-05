@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pink_primary">#D81B60</color>
     <color name="pink_dark">#A00037</color>
+    <color name="gray_300">#FFE0E0E0</color>
+    <color name="gray_600">#FF757575</color>
+    <color name="red_700">#FFD32F2F</color>
+    <color name="indigo_700">#FF303F9F</color>
+    <color name="blue_700">#FF1976D2</color>
+    <color name="stats_bg">#FFF5F5F5</color>
+    <color name="info_bg">#FFF5F5F5</color>
 </resources>
