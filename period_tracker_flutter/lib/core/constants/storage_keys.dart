@@ -9,4 +9,5 @@ class StorageKeys {
   static const String biometricEnabled = 'biometric_enabled';
 
   static const String securePinHash = 'secure_pin_hash';
+  static const String secureHiveKey = 'secure_hive_key';
 }

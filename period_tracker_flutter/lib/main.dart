@@ -1,16 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app.dart';
-import 'core/constants/storage_keys.dart';
+import 'core/storage/hive_storage_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter();
-  await Hive.openBox<dynamic>(StorageKeys.cyclesBox);
-  await Hive.openBox<dynamic>(StorageKeys.settingsBox);
+  await HiveStorageService.initialize();
 
   runApp(const ProviderScope(child: PeriodTrackerApp()));
 }

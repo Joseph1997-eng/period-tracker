@@ -1,5 +1,5 @@
 class CycleEntry {
-  const CycleEntry({
+  CycleEntry({
     required this.id,
     required this.startDate,
     required this.endDate,

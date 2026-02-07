@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../domain/entities/analytics_summary.dart';
 import '../../domain/entities/cycle_entry.dart';
 import '../../domain/entities/cycle_prediction.dart';
@@ -7,6 +9,8 @@ class CycleAnalyticsEngine {
 
   static const int defaultCycleLength = 28;
   static const int defaultPeriodLength = 5;
+  static const int minValidCycleLength = 15;
+  static const int maxValidCycleLength = 60;
   static const double irregularityStdDevThreshold = 3.0;
 
   List<int> calculateCycleLengths(List<CycleEntry> entries) {
@@ -23,7 +27,8 @@ class CycleAnalyticsEngine {
       final int days = _dateOnly(
         sorted[i].startDate,
       ).difference(_dateOnly(sorted[i - 1].startDate)).inDays;
-      if (days >= 15 && days <= 60) {
+
+      if (days >= minValidCycleLength && days <= maxValidCycleLength) {
         lengths.add(days);
       }
     }
@@ -53,10 +58,7 @@ class CycleAnalyticsEngine {
       return defaultCycleLength.toDouble();
     }
 
-    final int sum = values.fold<int>(
-      0,
-      (int previous, int value) => previous + value,
-    );
+    final int sum = values.fold<int>(0, (int prev, int item) => prev + item);
     return sum / values.length;
   }
 
@@ -69,13 +71,10 @@ class CycleAnalyticsEngine {
     final double variance =
         values
             .map<double>((int value) => (value - avg) * (value - avg))
-            .fold<double>(
-              0,
-              (double previous, double value) => previous + value,
-            ) /
+            .fold<double>(0, (double prev, double item) => prev + item) /
         values.length;
 
-    return variance.sqrt();
+    return math.sqrt(variance);
   }
 
   AnalyticsSummary buildAnalytics(List<CycleEntry> entries) {
@@ -104,18 +103,25 @@ class CycleAnalyticsEngine {
 
     final CycleEntry latest = sorted.last;
     final List<int> cycleLengths = calculateCycleLengths(sorted);
+
     final double weightedAverage = weightedAverageCycleLength(cycleLengths);
-    final int predictedCycleLength = weightedAverage.round();
+    final int predictedCycleLength = weightedAverage.round().clamp(
+      minValidCycleLength,
+      maxValidCycleLength,
+    );
 
     final int averagePeriodLength = _averagePeriodLength(sorted);
-    final DateTime nextStart = _dateOnly(
+
+    final DateTime nextPeriodStart = _dateOnly(
       latest.startDate,
     ).add(Duration(days: predictedCycleLength));
-    final DateTime nextEnd = nextStart.add(
+    final DateTime nextPeriodEnd = nextPeriodStart.add(
       Duration(days: averagePeriodLength - 1),
     );
 
-    final DateTime ovulationDate = nextStart.subtract(const Duration(days: 14));
+    final DateTime ovulationDate = nextPeriodStart.subtract(
+      const Duration(days: 14),
+    );
     final DateTime fertileWindowStart = ovulationDate.subtract(
       const Duration(days: 5),
     );
@@ -126,8 +132,8 @@ class CycleAnalyticsEngine {
     final double confidence = _calculateConfidence(cycleLengths);
 
     return CyclePrediction(
-      predictedStartDate: nextStart,
-      predictedEndDate: nextEnd,
+      predictedStartDate: nextPeriodStart,
+      predictedEndDate: nextPeriodEnd,
       ovulationDate: ovulationDate,
       fertileWindowStart: fertileWindowStart,
       fertileWindowEnd: fertileWindowEnd,
@@ -143,11 +149,10 @@ class CycleAnalyticsEngine {
 
     final int totalPeriodDays = entries.fold<int>(
       0,
-      (int previous, CycleEntry entry) => previous + entry.periodLengthDays,
+      (int prev, CycleEntry item) => prev + item.periodLengthDays,
     );
 
-    final int average = (totalPeriodDays / entries.length).round();
-    return average.clamp(2, 10);
+    return (totalPeriodDays / entries.length).round().clamp(2, 10);
   }
 
   double _calculateConfidence(List<int> cycleLengths) {
@@ -156,25 +161,10 @@ class CycleAnalyticsEngine {
     }
 
     final double stdDev = standardDeviation(cycleLengths);
-    final double normalized = (1 - (stdDev / 10)).clamp(0.35, 0.98);
-    return normalized.toDouble();
+    return (1 - (stdDev / 10)).clamp(0.35, 0.98);
   }
 
-  DateTime _dateOnly(DateTime date) {
-    return DateTime(date.year, date.month, date.day);
-  }
-}
-
-extension on double {
-  double sqrt() {
-    if (this <= 0) {
-      return 0;
-    }
-
-    double guess = this / 2;
-    for (int i = 0; i < 12; i++) {
-      guess = (guess + this / guess) / 2;
-    }
-    return guess;
+  DateTime _dateOnly(DateTime value) {
+    return DateTime(value.year, value.month, value.day);
   }
 }

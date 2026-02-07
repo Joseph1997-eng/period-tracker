@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../dashboard/presentation/screens/dashboard_screen.dart';
 import '../../../cycle/presentation/screens/analytics_screen.dart';
 import '../../../cycle/presentation/screens/cycle_tracker_screen.dart';
 import '../../../settings/presentation/screens/settings_screen.dart';
@@ -15,12 +16,14 @@ class _HomeShellState extends State<HomeShell> {
   int _index = 0;
 
   static const List<Widget> _pages = <Widget>[
+    DashboardScreen(),
     CycleTrackerScreen(),
     AnalyticsScreen(),
     SettingsScreen(),
   ];
 
   static const List<String> _titles = <String>[
+    'Dashboard',
     'Cycle Tracker',
     'Analytics',
     'Settings',
@@ -39,6 +42,10 @@ class _HomeShellState extends State<HomeShell> {
           });
         },
         destinations: const <NavigationDestination>[
+          NavigationDestination(
+            icon: Icon(Icons.dashboard_outlined),
+            label: 'Dashboard',
+          ),
           NavigationDestination(
             icon: Icon(Icons.monitor_heart_outlined),
             label: 'Track',

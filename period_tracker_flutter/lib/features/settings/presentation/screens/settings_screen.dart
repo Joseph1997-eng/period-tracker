@@ -42,12 +42,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ref
                       .read(settingsControllerProvider.notifier)
                       .setPrivacyLockEnabled(enabled);
-                  ref
-                      .read(lockControllerProvider.notifier)
-                      .initialize(
-                        lockEnabled: enabled,
-                        biometricEnabled: settings.biometricEnabled,
-                      );
                 },
               ),
               const Divider(height: 1),
@@ -60,12 +54,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ref
                             .read(settingsControllerProvider.notifier)
                             .setBiometricEnabled(enabled);
-                        ref
-                            .read(lockControllerProvider.notifier)
-                            .initialize(
-                              lockEnabled: settings.privacyLockEnabled,
-                              biometricEnabled: enabled,
-                            );
                       }
                     : null,
               ),
@@ -95,7 +83,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   runSpacing: 8,
                   children: <Widget>[
                     FilledButton.icon(
-                      onPressed: () => _upsertPin(context),
+                      onPressed: _upsertPin,
                       icon: const Icon(Icons.pin_outlined),
                       label: Text(
                         lockState.hasPinConfigured ? 'Change PIN' : 'Set PIN',
@@ -103,7 +91,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     if (lockState.hasPinConfigured)
                       OutlinedButton.icon(
-                        onPressed: () => _removePin(context),
+                        onPressed: _removePin,
                         icon: const Icon(Icons.delete_outline),
                         label: const Text('Remove PIN'),
                       ),
@@ -117,8 +105,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Future<void> _upsertPin(BuildContext context) async {
-    final String? pin = await _showPinDialog(context);
+  Future<void> _upsertPin() async {
+    final String? pin = await _showPinDialog();
     if (pin == null) {
       return;
     }
@@ -137,7 +125,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     ).showSnackBar(const SnackBar(content: Text('PIN saved successfully.')));
   }
 
-  Future<void> _removePin(BuildContext context) async {
+  Future<void> _removePin() async {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -176,7 +164,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Future<String?> _showPinDialog(BuildContext context) async {
+  Future<String?> _showPinDialog() async {
     final TextEditingController pinController = TextEditingController();
     final TextEditingController confirmController = TextEditingController();
     String? error;

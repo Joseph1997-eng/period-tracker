@@ -1,7 +1,7 @@
 import '../../features/cycle/domain/entities/cycle_entry.dart';
 
 class CycleModel extends CycleEntry {
-  const CycleModel({
+  CycleModel({
     required super.id,
     required super.startDate,
     required super.endDate,

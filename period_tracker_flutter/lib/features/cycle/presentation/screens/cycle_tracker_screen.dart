@@ -13,9 +13,27 @@ class CycleTrackerScreen extends ConsumerStatefulWidget {
 
 class _CycleTrackerScreenState extends ConsumerState<CycleTrackerScreen> {
   final TextEditingController _notesController = TextEditingController();
+  ProviderSubscription<CycleState>? _cycleSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _cycleSubscription = ref.listenManual<CycleState>(cycleControllerProvider, (
+      CycleState? previous,
+      CycleState next,
+    ) {
+      final String? message = next.errorMessage;
+      if (message != null && message != previous?.errorMessage && mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+    });
+  }
 
   @override
   void dispose() {
+    _cycleSubscription?.close();
     _notesController.dispose();
     super.dispose();
   }
@@ -63,7 +81,7 @@ class _CycleTrackerScreenState extends ConsumerState<CycleTrackerScreen> {
             maxLines: 2,
             textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
-              hintText: 'Symptoms, mood, reminders... ',
+              hintText: 'Symptoms, mood, reminders...',
             ),
           ),
           actions: <Widget>[
@@ -83,18 +101,6 @@ class _CycleTrackerScreenState extends ConsumerState<CycleTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<CycleState>(cycleControllerProvider, (
-      CycleState? previous,
-      CycleState next,
-    ) {
-      final String? message = next.errorMessage;
-      if (message != null && message != previous?.errorMessage) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(message)));
-      }
-    });
-
     final CycleState state = ref.watch(cycleControllerProvider);
     final DateFormat dateFormat = DateFormat('MMM d, yyyy');
 
@@ -114,28 +120,48 @@ class _CycleTrackerScreenState extends ConsumerState<CycleTrackerScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Next Prediction',
+                          'Prediction',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'Period starts: ${dateFormat.format(state.prediction!.predictedStartDate)}',
+                        const SizedBox(height: 10),
+                        _PredictionLine(
+                          label: 'Next period start',
+                          value: dateFormat.format(
+                            state.prediction!.predictedStartDate,
+                          ),
                         ),
-                        Text(
-                          'Period ends: ${dateFormat.format(state.prediction!.predictedEndDate)}',
+                        _PredictionLine(
+                          label: 'Next period end',
+                          value: dateFormat.format(
+                            state.prediction!.predictedEndDate,
+                          ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Weighted cycle length: ${state.prediction!.weightedAverageCycleLength.toStringAsFixed(1)} days',
+                        _PredictionLine(
+                          label: 'Ovulation day',
+                          value: dateFormat.format(
+                            state.prediction!.ovulationDate,
+                          ),
                         ),
-                        Text(
-                          'Confidence: ${(state.prediction!.confidence * 100).toStringAsFixed(0)}%',
+                        _PredictionLine(
+                          label: 'Fertile window',
+                          value:
+                              '${dateFormat.format(state.prediction!.fertileWindowStart)} - ${dateFormat.format(state.prediction!.fertileWindowEnd)}',
+                        ),
+                        _PredictionLine(
+                          label: 'Weighted cycle',
+                          value:
+                              '${state.prediction!.weightedAverageCycleLength.toStringAsFixed(1)} d',
+                        ),
+                        _PredictionLine(
+                          label: 'Confidence',
+                          value:
+                              '${(state.prediction!.confidence * 100).toStringAsFixed(0)}%',
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
               ],
               Card(
                 child: Padding(
@@ -144,7 +170,7 @@ class _CycleTrackerScreenState extends ConsumerState<CycleTrackerScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'History',
+                        'Cycle History',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 8),
@@ -191,6 +217,33 @@ class _CycleTrackerScreenState extends ConsumerState<CycleTrackerScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _PredictionLine extends StatelessWidget {
+  const _PredictionLine({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(label),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

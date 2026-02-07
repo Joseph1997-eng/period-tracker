@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../home/presentation/screens/home_shell.dart';
+import '../../../settings/domain/entities/app_settings.dart';
 import '../../../settings/presentation/controllers/settings_controller.dart';
-import '../controllers/lock_controller.dart';
+import '../controllers/lock_controller.dart' as lock_feature;
 
 class LockGateScreen extends ConsumerStatefulWidget {
   const LockGateScreen({super.key});
@@ -15,16 +16,39 @@ class LockGateScreen extends ConsumerStatefulWidget {
 class _LockGateScreenState extends ConsumerState<LockGateScreen>
     with WidgetsBindingObserver {
   final TextEditingController _pinController = TextEditingController();
+  ProviderSubscription<AppSettings>? _settingsSubscription;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeLock());
+
+    _settingsSubscription = ref.listenManual<AppSettings>(
+      settingsControllerProvider,
+      (AppSettings? previous, AppSettings next) {
+        final bool shouldInitialize =
+            previous == null ||
+            previous.privacyLockEnabled != next.privacyLockEnabled ||
+            previous.biometricEnabled != next.biometricEnabled;
+
+        if (!shouldInitialize) {
+          return;
+        }
+
+        ref
+            .read(lock_feature.lockControllerProvider.notifier)
+            .initialize(
+              lockEnabled: next.privacyLockEnabled,
+              biometricEnabled: next.biometricEnabled,
+            );
+      },
+      fireImmediately: true,
+    );
   }
 
   @override
   void dispose() {
+    _settingsSubscription?.close();
     WidgetsBinding.instance.removeObserver(this);
     _pinController.dispose();
     super.dispose();
@@ -34,36 +58,19 @@ class _LockGateScreenState extends ConsumerState<LockGateScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
-      final settings = ref.read(settingsControllerProvider);
+      final AppSettings settings = ref.read(settingsControllerProvider);
       ref
-          .read(lockControllerProvider.notifier)
+          .read(lock_feature.lockControllerProvider.notifier)
           .lockIfNeeded(lockEnabled: settings.privacyLockEnabled);
     }
   }
 
-  Future<void> _initializeLock() async {
-    final settings = ref.read(settingsControllerProvider);
-    await ref
-        .read(lockControllerProvider.notifier)
-        .initialize(
-          lockEnabled: settings.privacyLockEnabled,
-          biometricEnabled: settings.biometricEnabled,
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
-    ref.listen(settingsControllerProvider, (_, settings) {
-      ref
-          .read(lockControllerProvider.notifier)
-          .initialize(
-            lockEnabled: settings.privacyLockEnabled,
-            biometricEnabled: settings.biometricEnabled,
-          );
-    });
-
-    final settings = ref.watch(settingsControllerProvider);
-    final lockState = ref.watch(lockControllerProvider);
+    final AppSettings settings = ref.watch(settingsControllerProvider);
+    final lock_feature.LockState lockState = ref.watch(
+      lock_feature.lockControllerProvider,
+    );
 
     if (!settings.privacyLockEnabled) {
       return const HomeShell();
@@ -130,7 +137,9 @@ class _LockGateScreenState extends ConsumerState<LockGateScreen>
                         TextButton.icon(
                           onPressed: () {
                             ref
-                                .read(lockControllerProvider.notifier)
+                                .read(
+                                  lock_feature.lockControllerProvider.notifier,
+                                )
                                 .authenticateWithBiometrics();
                           },
                           icon: const Icon(Icons.fingerprint),
@@ -168,7 +177,9 @@ class _LockGateScreenState extends ConsumerState<LockGateScreen>
 
   Future<void> _unlockWithPin() async {
     final String pin = _pinController.text.trim();
-    await ref.read(lockControllerProvider.notifier).unlockWithPin(pin);
+    await ref
+        .read(lock_feature.lockControllerProvider.notifier)
+        .unlockWithPin(pin);
     _pinController.clear();
   }
 }

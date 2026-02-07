@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/widgets/cycle_length_chart.dart';
 import '../controllers/cycle_controller.dart';
 
 class AnalyticsScreen extends ConsumerWidget {
@@ -21,24 +22,50 @@ class AnalyticsScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Cycle Statistics',
+                  'Trend Graph',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 12),
+                SizedBox(
+                  height: 260,
+                  child: CycleLengthChart(
+                    cycleLengths: analytics.cycleLengths,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Cycle Statistics',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 10),
                 _MetricRow(
                   title: 'Average cycle length',
                   value:
                       '${analytics.averageCycleLength.toStringAsFixed(1)} days',
                 ),
                 _MetricRow(
-                  title: 'Weighted average',
+                  title: 'Weighted average cycle',
                   value:
                       '${analytics.weightedAverageCycleLength.toStringAsFixed(1)} days',
                 ),
                 _MetricRow(
                   title: 'Standard deviation',
-                  value:
-                      '${analytics.standardDeviation.toStringAsFixed(2)} days',
+                  value: analytics.standardDeviation.toStringAsFixed(2),
+                ),
+                _MetricRow(
+                  title: 'Cycle samples',
+                  value: analytics.cycleLengths.length.toString(),
                 ),
               ],
             ),
@@ -71,39 +98,11 @@ class AnalyticsScreen extends ConsumerWidget {
                       child: Text(
                         analytics.isIrregular
                             ? 'Detected irregular cycle pattern (std dev >= 3.0).'
-                            : 'Cycle pattern looks stable.',
+                            : 'Cycle pattern is within stable range.',
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Cycle Length Samples',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 12),
-                if (analytics.cycleLengths.isEmpty)
-                  const Text(
-                    'Need at least two cycle entries for trend analytics.',
-                  )
-                else
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: analytics.cycleLengths
-                        .map((int days) => Chip(label: Text('$days d')))
-                        .toList(),
-                  ),
               ],
             ),
           ),
@@ -131,7 +130,7 @@ class _MetricRow extends StatelessWidget {
             value,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
         ],
       ),
